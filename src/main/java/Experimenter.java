@@ -10,6 +10,7 @@ import org.apache.spark.streaming.api.java.JavaPairReceiverInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.apache.spark.streaming.kafka.KafkaUtils;
 import scala.Tuple2;
+import util.InstanceParser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,16 +21,15 @@ import java.util.*;
  */
 public class Experimenter {
 
-    public static String KYOTO_DATABASE = "/home/loezerl-fworks/Downloads/kyoto.arff";;
-    public static String DIABETES_DATABASE = "/home/loezerl-fworks/IdeaProjects/Experimenter/diabetes.arff";;
     public static SparkConf conf;
 
     public static void main(String[] args) throws Exception{
 
 
-        //        local[2] - seta o numero de threads
+        //        local[2] - Number of Threads
         conf = new SparkConf().setAppName("spark-knn").setMaster("local[2]").set("spark.cores.max", "8");
-        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(10));
+        Integer BATCH_TIME = 10;
+        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(BATCH_TIME));
         jssc.sparkContext().setLogLevel("ERROR");
 
         Map<String, Integer> topicMap = new HashMap<>();
@@ -38,13 +38,9 @@ public class Experimenter {
         JavaPairReceiverInputDStream<String, String> messages =
                 KafkaUtils.createStream(jssc, "localhost:2181", "teste", topicMap);
 
-//
-//        KNN2 tadsasda = new KNN2(7, 1000, "euclidean");
 
         KNN my_classifier = new KNN(7, 1000, "euclidean");
         Classifier.setInstance(my_classifier);
-
-        Prequential evaluator = new Prequential(my_classifier);
 
         JavaDStream<String> lines = messages.map(Tuple2::_2);
 
@@ -62,30 +58,15 @@ public class Experimenter {
 
         answers.print();
 
-        //lines.print();
         jssc.start();
 
         try{
             jssc.awaitTerminationOrTimeout(50000);
         }catch (InterruptedException e){
-            System.err.println("FUDEU BAHIA -> " + e.getMessage());
+            System.err.println("Error -> " + e.getMessage());
             System.exit(1);
         }
     }
-
-    public static class InstanceParser{
-
-        public static Vector<Double> Parser(String element){
-            List<String> Elements = Arrays.asList(element.split(","));
-
-            Vector<Double> Array = new Vector<>();
-            for(String el: Elements){
-                Array.add(Double.parseDouble(el));
-            }
-            return Array;
-        }
-    }
-
      public static class PrequentialMap {
 
         public static boolean run(Vector<Double> instance){
