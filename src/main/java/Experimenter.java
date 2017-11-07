@@ -11,6 +11,8 @@ import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.apache.spark.streaming.kafka.KafkaUtils;
 import scala.Tuple2;
 import util.InstanceParser;
+import util.ResultBox;
+import util.Results;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,10 +29,13 @@ public class Experimenter {
 
 
         //        local[2] - Number of Threads
-        conf = new SparkConf().setAppName("spark-knn").setMaster("local[2]").set("spark.cores.max", "8");
+        conf = new SparkConf().setAppName("spark-knn").setMaster("local[32]");
         Integer BATCH_TIME = 10;
         JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(BATCH_TIME));
         jssc.sparkContext().setLogLevel("ERROR");
+
+        ResultBox resultados = new ResultBox();
+        Results.setInstance(resultados);
 
         Map<String, Integer> topicMap = new HashMap<>();
         topicMap.put("instances", 1);
@@ -57,21 +62,22 @@ public class Experimenter {
         );
 
         answers.print();
-
+        long total = Runtime.getRuntime().totalMemory();
         jssc.start();
-
-        try{
-            jssc.awaitTerminationOrTimeout(50000);
-        }catch (InterruptedException e){
-            System.err.println("Error -> " + e.getMessage());
-            System.exit(1);
-        }
+        int minutes = 5;
+        jssc.awaitTerminationOrTimeout(60000*minutes);
+        jssc.stop();
+        long used  = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        resultados.PrintResult();
+        System.err.println("Memory: " + (used/1024.0)/1024.0);
     }
      public static class PrequentialMap {
 
         public static boolean run(Vector<Double> instance){
             Classifier classifier = Classifier.getInstance();
             Boolean answer = classifier.test(instance);
+            Results r = Results.getInstance();
+            r.setValue(answer);
             classifier.train(instance);
             return answer;
         }
