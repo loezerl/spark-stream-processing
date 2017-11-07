@@ -127,5 +127,44 @@ Com o projeto criado, basta adicionar as dependências necessárias do `pom.xml`
 Com as dependências baixadas, você já pode iniciar sua implementação utilizando o Apache Spark. Caso você não saiba quais ferramentas irá precisar, basta pegar as dependências do arquivo `pom.xml` dos [exemplos disponibilizados](https://github.com/apache/spark/blob/master/examples/pom.xml) pelo Apache Spark.
 
 #### 3 - Instalando e Configurando o Apache Kakfa <a name="kafka"></a>
+A API do Apache Spark Streaming não tem compatibilidade com o módulo de leitura de arquivos `ARFF` disponível no [MOA](https://github.com/Waikato/moa/blob/master/moa/src/main/java/moa/streams/ArffFileStream.java).
+
+Um *workarround* para isso, é conectar a leitura de arquivos do Apache Spark em um tópico do Apache Kafka. O Apache Kafka pode ler o arquivo utilizando o módulo `ArrFileStream` e emitir as instâncias para um tópico aonde o Apache Spark irá consumir.
+
+**Kafka Producer - Arff File**:
+
+A implementação de um Kafka Producer utilizando o módulo de leitura de arquivos Arff pode ser [encontrado aqui](https://github.com/loezerl/kafka-arff-producer/blob/master/src/main/java/Producer.java). 
+
+Por enquanto, o parser das instancias é realizada utilizando o `StringSerializer`, o que não é uma boa prática. O correto seria que a classe Instance tivesse um serializador para enviar ela junto com os metadados e, o Apache Spark utilizar um deserializador para acessar a instancia como se tivesse utilizando o módulo de leitura de arquivos arff do MOA. Esse upgrade nesse protótipo facilitaria a interoperabilidade dos classificadores presentes no MOA com o Apache Spark.
+
+##### 3.1 - Instalando o Apache Kafka
+A instalação do Apache Kafka é simples, basta entrar na página de downloads, baixar o kafka (verifique a [versão compatível com o Apache Spark aqui](https://spark.apache.org/docs/2.2.0/streaming-kafka-integration.html)) e descompactar o arquivo.
+
+Com o arquivo descompactado, você precisará levantar um servidor do ZooKeeper, para isso navegue até a pasta do kafka execute o comando abaixo:
+
+```
+$ sudo bin/zookeeper-server-start.sh config/zookeeper.properties
+[2013-04-22 15:01:37,495] INFO Reading configuration from: config/zookeeper.properties (org.apache.zookeeper.server.quorum.QuorumPeerConfig)
+...
+```
+Abra outro terminal/bash e navegue novamente até a pasta do Kafka, execute os comandos abaixo para executar o Kafka Server:
+
+```
+$ bin/kafka-server-start.sh config/server.properties
+[2013-04-22 15:01:47,028] INFO Verifying properties (kafka.utils.VerifiableProperties)
+[2013-04-22 15:01:47,051] INFO Property socket.send.buffer.bytes is overridden to 1048576 (kafka.utils.VerifiableProperties)
+...
+```
+Agora você deve criar um tópico para que o Kafka Producer consiga escrever e a aplicação do Apache Spark consiga consumir. Para isso basta:
+
+```
+$ bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic instances
+```
+Agora nós criamos um tópico chamado `instances`, você pode listar os tópicos utilizando o seguinte comando:
+
+```
+$ bin/kafka-topics.sh --list --zookeeper localhost:2181
+instances
+```
 
 #### 4 - Executando o protótipo. <a name="prot"></a>
