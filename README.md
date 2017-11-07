@@ -1,7 +1,7 @@
-### Spark Streaming Mining - Protótipo
+## Spark Streaming Mining - Protótipo
 *Esse protótipo está em fase de desenvolvimento para melhorar a arquitetura e facilitar a interoperabilidade de novos módulos de mineração de fluxo de dados.*
 
-#### Sumário
+### Sumário
 **[1. Instalando do Apache Spark](#install)**
 
 **[2. Utilizando o Apache Spark em seu projeto.](#maven)**
@@ -13,8 +13,8 @@
 **[4. Executando o protótipo.](#prot)**
 
 
-#### 1 - Instalando o Apache Spark <a name="install"></a>
-##### 1.1 - Dependências
+### 1 - Instalando o Apache Spark <a name="install"></a>
+#### 1.1 - Dependências
 Para executar o Apache Spark com sucesso, algumas dependencias são necessárias. Dentre elas:
 
 **Java7+ SE**: Instale a versão do Java 7 ou superior e configure ela para ficar na variável de ambiente `JAVA_HOME`. Recomenda-se a instalação Java 8.
@@ -49,7 +49,7 @@ Isso vai mostrar a versão do scala:
 
 **Python 3.4+**: Instale a versão 3.4 ou superior. Recomenda-se o pacote da [Anaconda](https://www.anaconda.com/download/)
 
-##### 1.2 - Instalando o Apache Spark
+#### 1.2 - Instalando o Apache Spark
 
 Entre na [página de download](https://spark.apache.org/downloads.html) e baixe a ultima versão disponível com o Hadoop pré-compilado.
 
@@ -66,7 +66,7 @@ Digite `:quit` caso deseje encerrar o Spark Shell.
 
 O pacote de download do Apache Spark vem com alguns exemplos que podem ser executados. Caso deseje isso, acesse este [Tutorial - Run the Java application on Apache Spark cluster](http://www.robertomarchetto.com/spark_java_maven_example).
 
-#### 2 - Utilizando o Apache Spark em seu projeto. <a name="maven"></a>
+### 2 - Utilizando o Apache Spark em seu projeto. <a name="maven"></a>
 Se voce deseja programar usando as ferramentas do Apache Spark, crie um projeto utilizando o [Maven - Tutorial Criando repositório](https://maven.apache.org/guides/getting-started/). 
 
 O maven gera uma hierarquia de pastas e alguns arquivos, dentre eles o que iremos focar aqui é o `pom.xml` (Project Object Model).
@@ -100,7 +100,7 @@ Para executar esse projeto, copie os dados contidos no arquivo `pom.xml` [locali
 
 Para mais informações sobre como utilizar o Maven com o Apache Spark, [acesse aqui](http://www.robertomarchetto.com/spark_java_maven_example).
 
-##### 2.1 - Integração com a IDE IntelliJ IDEA <a name="idea"></a>
+#### 2.1 - Integração com a IDE IntelliJ IDEA <a name="idea"></a>
 Esse prototótipo foi desenvolvido utilizando a IDE IntelliJ IDEA Community, pois ela facilita o processo de Debug e auto-importação das dependencias do Maven.
 Para instalar essa IDE, basta seguir o [tutorial do próprio site](https://www.jetbrains.com/idea/download/).
 
@@ -126,7 +126,7 @@ Com o projeto criado, basta adicionar as dependências necessárias do `pom.xml`
 
 Com as dependências baixadas, você já pode iniciar sua implementação utilizando o Apache Spark. Caso você não saiba quais ferramentas irá precisar, basta pegar as dependências do arquivo `pom.xml` dos [exemplos disponibilizados](https://github.com/apache/spark/blob/master/examples/pom.xml) pelo Apache Spark.
 
-#### 3 - Instalando e Configurando o Apache Kakfa <a name="kafka"></a>
+### 3 - Instalando e Configurando o Apache Kakfa <a name="kafka"></a>
 A API do Apache Spark Streaming não tem compatibilidade com o módulo de leitura de arquivos `ARFF` disponível no [MOA](https://github.com/Waikato/moa/blob/master/moa/src/main/java/moa/streams/ArffFileStream.java).
 
 Um *workarround* para isso, é conectar a leitura de arquivos do Apache Spark em um tópico do Apache Kafka. O Apache Kafka pode ler o arquivo utilizando o módulo `ArrFileStream` e emitir as instâncias para um tópico aonde o Apache Spark irá consumir.
@@ -137,7 +137,7 @@ A implementação de um Kafka Producer utilizando o módulo de leitura de arquiv
 
 Por enquanto, o parser das instancias é realizada utilizando o `StringSerializer`, o que não é uma boa prática. O correto seria que a classe Instance tivesse um serializador para enviar ela junto com os metadados e, o Apache Spark utilizar um deserializador para acessar a instancia como se tivesse utilizando o módulo de leitura de arquivos arff do MOA. Esse upgrade nesse protótipo facilitaria a interoperabilidade dos classificadores presentes no MOA com o Apache Spark.
 
-##### 3.1 - Instalando o Apache Kafka
+#### 3.1 - Instalando o Apache Kafka
 A instalação do Apache Kafka é simples, basta entrar na página de downloads, baixar o kafka (verifique a [versão compatível com o Apache Spark aqui](https://spark.apache.org/docs/2.2.0/streaming-kafka-integration.html)) e descompactar o arquivo.
 
 Com o arquivo descompactado, você precisará levantar um servidor do ZooKeeper, para isso navegue até a pasta do kafka execute o comando abaixo:
@@ -167,4 +167,4 @@ $ bin/kafka-topics.sh --list --zookeeper localhost:2181
 instances
 ```
 
-#### 4 - Executando o protótipo. <a name="prot"></a>
+### 4 - Executando o protótipo. <a name="prot"></a>
