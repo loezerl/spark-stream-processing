@@ -71,7 +71,7 @@ Se voce deseja programar usando as ferramentas do Apache Spark, crie um projeto 
 
 O maven gera uma hierarquia de pastas e alguns arquivos, dentre eles o que iremos focar aqui é o `pom.xml` (Project Object Model).
 
-```pom
+```xml
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
@@ -97,9 +97,34 @@ O maven gera uma hierarquia de pastas e alguns arquivos, dentre eles o que iremo
 O arquivo `pom.xml` contém as informações do seu projeto, dentre elas as dependências. Para utilizar as ferramentas do Apache Spark, voce pode adicionar as dependencias no arquivo `pom.xml`. Essas podem ser encontradas aqui [Maven - Apache Spark](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.apache.spark%22). Basta selecionar as ferramentas que você julga necessário. 
 
 Para executar esse projeto, copie os dados contidos no arquivo `pom.xml` [localizado no diretório](https://github.com/loezerl/spark-stream-processing/blob/master/pom.xml).
-Para mais informações, [acesse aqui](http://www.robertomarchetto.com/spark_java_maven_example).
+
+Para mais informações sobre como utilizar o Maven com o Apache Spark, [acesse aqui](http://www.robertomarchetto.com/spark_java_maven_example).
 
 ##### 2.1 - Integração com a IDE IntelliJ IDEA <a name="idea"></a>
+Esse prototótipo foi desenvolvido utilizando a IDE IntelliJ IDEA Community, pois ela facilita o processo de Debug e auto-importação das dependencias do Maven.
+Para instalar essa IDE, basta seguir o [tutorial do próprio site](https://www.jetbrains.com/idea/download/).
+
+Com o IDEA instalado e devidamente configurado com a sua JDK, você deverá criar um projeto do tipo Maven:
+
+`File -> New Project -> Maven`
+
+![IDEA New Project - Maven](https://i.imgur.com/cxsMYzS.png)
+
+Clique em `Next` e preencha os dados de `GroupId` e `ArtifactId`. 
+
+![IDEA Maven Project](https://i.imgur.com/7QClio6.png)
+
+Clique em `Next` novamente e preencha os dados de `Project name` e `Project location` caso seja necessário. Clique em `Finish` para criar o projeto.
+
+Pode demorar um pouco e exigir processamento do seu computador, pois o IDEA está indexando as informações presentes no `pom.xml`.
+
+![Indexando o pom.xml](https://i.imgur.com/59II58m.png)
+
+Com o projeto criado, basta adicionar as dependências necessárias do `pom.xml` e permitir a auto-importação dos pacotes na IDE.
+
+![Permitindo a auto-importação](https://i.imgur.com/uDwumpx.png)
+
+Com as dependências baixadas, você já pode iniciar sua implementação utilizando o Apache Spark. Caso você não saiba quais ferramentas irá precisar, basta pegar as dependências do arquivo `pom.xml` dos [exemplos disponibilizados](https://github.com/apache/spark/blob/master/examples/pom.xml) pelo Apache Spark.
 
 #### 3 - Instalando e Configurando o Apache Kakfa <a name="kafka"></a>
 
