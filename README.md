@@ -14,7 +14,7 @@
 
 
 #### 1 - Instalando o Apache Spark <a name="install"></a>
-##### 1.1 - Dependencias
+##### 1.1 - Dependências
 Para executar o Apache Spark com sucesso, algumas dependencias são necessárias. Dentre elas:
 
 **Java7+ SE**: Instale a versão do Java 7 ou superior e configure ela para ficar na variável de ambiente `JAVA_HOME`. Recomenda-se a instalação Java 8.
@@ -62,9 +62,42 @@ Se os passos anteriores foram seguidos corretamente, a seguinte imagem deve apar
 
 ![Apache Spark Shell](https://i.imgur.com/3qk3Xrr.png)
 
-O pacote de download do Apache Spark vem com alguns exemplos que podem ser executados. Caso deseje isso, acesse este [tutorial - Run the Java application on Apache Spark cluster](http://www.robertomarchetto.com/spark_java_maven_example).
+Digite `:quit` caso deseje encerrar o Spark Shell.
+
+O pacote de download do Apache Spark vem com alguns exemplos que podem ser executados. Caso deseje isso, acesse este [Tutorial - Run the Java application on Apache Spark cluster](http://www.robertomarchetto.com/spark_java_maven_example).
 
 #### 2 - Utilizando o Apache Spark em seu projeto. <a name="maven"></a>
+Se voce deseja programar usando as ferramentas do Apache Spark, crie um projeto utilizando o [Maven - Tutorial Criando repositório](https://maven.apache.org/guides/getting-started/). 
+
+O maven gera uma hierarquia de pastas e alguns arquivos, dentre eles o que iremos focar aqui é o `pom.xml` (Project Object Model).
+
+```pom
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.mycompany.app</groupId>
+  <artifactId>my-app</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>Maven Quick Start Archetype</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
+```
+
+O arquivo `pom.xml` contém as informações do seu projeto, dentre elas as dependências. Para utilizar as ferramentas do Apache Spark, voce pode adicionar as dependencias no arquivo `pom.xml`. Essas podem ser encontradas aqui [Maven - Apache Spark](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.apache.spark%22). Basta selecionar as ferramentas que você julga necessário. 
+
+Para executar esse projeto, copie os dados contidos no arquivo `pom.xml` [localizado no diretório](https://github.com/loezerl/spark-stream-processing/blob/master/pom.xml).
+Para mais informações, [acesse aqui](http://www.robertomarchetto.com/spark_java_maven_example).
 
 ##### 2.1 - Integração com a IDE IntelliJ IDEA <a name="idea"></a>
 
