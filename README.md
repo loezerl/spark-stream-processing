@@ -168,3 +168,14 @@ instances
 ```
 
 ### 4 - Executando o protótipo. <a name="prot"></a>
+
+Após criar um projeto, colocar os arquivos presentes deste repositório e averiguar as dependências. Você necessitará de uma base grande do tipo Arff.
+Com isso, basta você: 
+
+- Abrir o seu Kafka Producer (tenha certeza de ter as libs do MOA disponíveis para o Producer utilizar).
+- Substituir o endereço para sua base de dados.
+- Limitar um número de instâncias que você deseja escrever num tópico.
+- Averiguar se o Kafka Producer estará enviando as instancias para o tópico `instances`.
+- Verificar se o Protótipo está conectado nesse mesmo tópico.
+- Realizar os passos descritos no item 3.1, levantando um servidor do Apache Kafka e ZooKeeper.
+- Executar o protótipo e logo em seguida o Kafka Producer.
